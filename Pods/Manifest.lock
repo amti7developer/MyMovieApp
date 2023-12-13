@@ -1,0 +1,20 @@
+PODS:
+  - LBTAComponents (1.0.2)
+  - TinyConstraints (4.0.1)
+
+DEPENDENCIES:
+  - LBTAComponents
+  - TinyConstraints (= 4.0.1)
+
+SPEC REPOS:
+  trunk:
+    - LBTAComponents
+    - TinyConstraints
+
+SPEC CHECKSUMS:
+  LBTAComponents: c4c8863e0ef6715e378300db148b96a09df656f7
+  TinyConstraints: 8dd91295e56797648c7bc335dd20e1d91ec4c192
+
+PODFILE CHECKSUM: f6011f728a518d4b91612d514a7c9cd5c1e9c3fd
+
+COCOAPODS: 1.11.3
