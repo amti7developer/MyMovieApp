@@ -1,6 +1,6 @@
 //
 //  DetailsViewController.swift
-//  GameOfThronesFactsApp
+//  MyMovieApp
 //
 //  Created by Kamil on 27/09/2020.
 //  Copyright © 2020 Kamil Gacek. All rights reserved.

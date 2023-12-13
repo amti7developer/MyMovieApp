@@ -1,6 +1,6 @@
 //
 //  MainCoordinator.swift
-//  GameOfThronesFactsApp
+//  MyMovieApp
 //
 //  Created by Kamil on 03/10/2020.
 //  Copyright © 2020 Kamil Gacek. All rights reserved.
@@ -12,8 +12,8 @@ class MainCoordinator: Coordinator {
 
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
-    let viewModel = CharacterListViewModel()
-    private lazy var characterListViewController = CharacterListViewController(viewModel: viewModel)
+    let viewModel = MovieListViewModel()
+    private lazy var moviesListViewController = MoviesListViewController(viewModel: viewModel)
     
 
     init(navigationController: UINavigationController) {
@@ -21,11 +21,11 @@ class MainCoordinator: Coordinator {
     }
     
     func start() {
-        characterListViewController.handleCharacterSelected = { [weak self] movie in
+        moviesListViewController.handleMovieSelected = { [weak self] movie in
             self?.presentDetails(movie: movie)
         }
 
-        navigationController.pushViewController(characterListViewController, animated: true)
+        navigationController.pushViewController(moviesListViewController, animated: true)
     }
     
     private func presentDetails(movie: Movie) {

@@ -1,6 +1,6 @@
 //
 //  DataParser.swift
-//  GameOfThronesFactsApp
+//  MyMovieApp
 //
 //  Created by Kamil on 02/10/2020.
 //  Copyright © 2020 Kamil Gacek. All rights reserved.
@@ -15,7 +15,7 @@ class DataFetcher {
 
     private let mainUrl = Environment.serverURL.absoluteString
 
-    func fetchCharacters(completion: @escaping ([Movie]?, Error?) -> Void) {
+    func fetchMovies(completion: @escaping ([Movie]?, Error?) -> Void) {
         let stringURL = "\(mainUrl)/3/movie/now_playing?language=en-US&page=1"
         guard let url = URL(string: stringURL) else { return }
         var request = URLRequest(url: url)
@@ -31,11 +31,6 @@ class DataFetcher {
     }
 
     private func getFetcher(request: URLRequest, completion: @escaping ([Movie]?, Error?) -> Void) {
-//        guard let url = URL(string: urlString) else {
-//            completion(nil, FetcherError.wrongURL)
-//            return
-//        }
-        
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             guard error == nil else {
                 completion(nil, error)

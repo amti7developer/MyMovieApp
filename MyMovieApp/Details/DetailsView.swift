@@ -1,6 +1,6 @@
 //
 //  DetailsView.swift
-//  GameOfThronesFactsApp
+//  MyMovieApp
 //
 //  Created by Kamil on 27/09/2020.
 //  Copyright © 2020 Kamil Gacek. All rights reserved.
@@ -75,7 +75,6 @@ final class DetailsView: BaseView {
     }
     
     override func setupSubviews() {
-//        titleLabel.textAlignment = .center
         titleLabel.font = .boldSystemFont(ofSize: Constants.bigFontSize)
         titleLabel.numberOfLines = Constants.doubleLine
         
@@ -84,19 +83,14 @@ final class DetailsView: BaseView {
         likeButton.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
         
         likeButton.tintColor = .black
-//        likeButton.isSelected = viewModel.isMovieFavorite()
         
         releaseLabel.font = .systemFont(ofSize: Constants.normalFontSize)
         ratingLabel.font = .systemFont(ofSize: Constants.normalFontSize)
         
-        print("(*) SETUP")
-        
         likeButton.isSelected = viewModel.isMovieFavorite()
 
-        
         detailsTextView.font = .systemFont(ofSize: Constants.normalFontSize)
         detailsTextView.isEditable = false
-//        detailsTextView.numberOfLines = 0
         
         moreButton.backgroundColor = .systemYellow
         moreButton.setTitle(Constants.closeString, for: .normal)

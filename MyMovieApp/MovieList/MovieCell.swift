@@ -1,6 +1,6 @@
 //
-//  CharacterCell.swift
-//  GameOfThronesFactsApp
+//  MovieCell.swift
+//  MyMovieApp
 //
 //  Created by Kamil on 28/09/2020.
 //  Copyright © 2020 Kamil Gacek. All rights reserved.
@@ -12,7 +12,7 @@ import TinyConstraints
 
 class MovieCell: UITableViewCell {
     
-    private let characterImageView = CachedImageView()
+    private let MovieImageView = CachedImageView()
     private let starImageView = UIButton()
     private let nameLabel = UILabel()
     private let descriptionLabel = UILabel()
@@ -30,7 +30,7 @@ class MovieCell: UITableViewCell {
     }
     
     func configure(with movie: Movie) {
-        characterImageView.loadImage(string: movie.backdrop_path ?? "")
+        MovieImageView.loadImage(string: movie.backdrop_path ?? "")
         nameLabel.text = movie.title
 //        if let popularity = movie.popularity {
 //            descriptionLabel.text = "\(popu)"
@@ -44,33 +44,28 @@ class MovieCell: UITableViewCell {
     }
     
     private func addSubviews() {
-        [characterImageView, nameLabel, descriptionLabel, starImageView].forEach {
+        [MovieImageView, nameLabel, descriptionLabel, starImageView].forEach {
             addSubview($0)
         }
     }
     
     private func setupConstraints() {
-        characterImageView.leadingToSuperview(offset: Constants.standardOffset)
-        characterImageView.centerYToSuperview()
+        MovieImageView.leadingToSuperview(offset: Constants.standardOffset)
+        MovieImageView.centerYToSuperview()
         
-        nameLabel.top(to: characterImageView, offset: Constants.smallerOffset)
-        nameLabel.leadingToTrailing(of: characterImageView, offset: Constants.standardOffset)
-//        nameLabel.trailingToSuperview(offset: Constants.standardOffset)
+        nameLabel.top(to: MovieImageView, offset: Constants.smallerOffset)
+        nameLabel.leadingToTrailing(of: MovieImageView, offset: Constants.standardOffset)
         
         starImageView.leadingToTrailing(of: nameLabel, offset: Constants.smallerOffset)
         starImageView.trailingToSuperview(offset: 8)
         starImageView.centerYToSuperview()
         starImageView.width(30)
         starImageView.height(30)
-        
-//        de    scriptionLabel.topToBottom(of: nameLabel, offset: Constants.smallerOffset)
-//        descriptionLabel.leadingToTrailing(of: characterImageView, offset: Constants.standardOffset)
-//        descriptionLabel.trailingToSuperview(offset: Constants.standardOffset)
     }
     
     private func setupSubviews() {
-        characterImageView.size(CGSize(width: Constants.buttonSize, height: Constants.buttonSize))
-        characterImageView.layer.cornerRadius = Constants.cornerRadius
+        MovieImageView.size(CGSize(width: Constants.buttonSize, height: Constants.buttonSize))
+        MovieImageView.layer.cornerRadius = Constants.cornerRadius
         
         nameLabel.font = .boldSystemFont(ofSize: Constants.standardOffset)
         nameLabel.numberOfLines = 2

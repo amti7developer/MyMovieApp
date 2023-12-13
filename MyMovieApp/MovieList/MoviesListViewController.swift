@@ -1,30 +1,24 @@
 //
-//  CharacterListViewController.swift
-//  GameOfThronesFactsApp
+//  MoviesListViewController.swift
+//  MyMovieApp
 //
-//  Created by Kamil on 02/10/2020.
+//  Created by Kamil on 02/10/2023.
 //  Copyright © 2020 Kamil Gacek. All rights reserved.
 //
 
 import UIKit
 import TinyConstraints
 
-final class CharacterListViewController: BaseViewController {
+final class MoviesListViewController: BaseViewController {
     
     private let searchController = UISearchController()
     
-    var handleCharacterSelected: ((Movie) -> Void)?
-    
-    private struct Constants {
-        static let cell = "cell"
-        static let cellHeight: CGFloat = 100
-        static let title = "Fresh Movies"
-    }
+    var handleMovieSelected: ((Movie) -> Void)?
     
     private var tableView = UITableView()
-    private var viewModel: CharacterListViewModelType
+    private var viewModel: MovieListViewModelType
     
-    init(viewModel: CharacterListViewModelType) {
+    init(viewModel: MovieListViewModelType) {
         self.viewModel = viewModel
         super.init()
         self.viewModel.delegate = self
@@ -59,7 +53,7 @@ final class CharacterListViewController: BaseViewController {
     }
 }
 
-extension CharacterListViewController: UITableViewDataSource  {
+extension MoviesListViewController: UITableViewDataSource  {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.movies.count
     }
@@ -67,8 +61,8 @@ extension CharacterListViewController: UITableViewDataSource  {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cell, for: indexPath) as? MovieCell, viewModel.movies.indices.contains(indexPath.row) else { return UITableViewCell() }
 
-        let character = viewModel.movies[indexPath.row]
-        cell.configure(with: character)
+        let Movie = viewModel.movies[indexPath.row]
+        cell.configure(with: Movie)
         
         return cell
     }
@@ -79,28 +73,27 @@ extension CharacterListViewController: UITableViewDataSource  {
 
 }
 
-extension CharacterListViewController: UITableViewDelegate {
+extension MoviesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        handleCharacterSelected?(viewModel.movies[indexPath.row])
+        handleMovieSelected?(viewModel.movies[indexPath.row])
     }
 }
 
-extension CharacterListViewController: CharacterListViewModelDelegate {
-    func viewModelReloadData(_ viewModel: CharacterListViewModelType) {
+extension MoviesListViewController: MovieListViewModelDelegate {
+    func viewModelReloadData(_ viewModel: MovieListViewModelType) {
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()
         }
     }
 }
 
-extension CharacterListViewController: UISearchResultsUpdating {
+extension MoviesListViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else {
             return
         }
         
         guard !(searchController.searchBar.text?.isEmpty ?? false) else {
-            print("(*) empty!!!")
             viewModel.resetMovieList()
             tableView.reloadData()
             return
@@ -111,15 +104,15 @@ extension CharacterListViewController: UISearchResultsUpdating {
         }
         
         viewModel.updateMovieList(movies: updatedMovies)
-        
-        
-        updatedMovies.forEach {
-            print("(*) ", $0.title)
-        }
-        
         tableView.reloadData()
-        
-        print("(*) TEXT:", text)
     }
     
+}
+
+extension MoviesListViewController {
+    private struct Constants {
+        static let cell = "cell"
+        static let cellHeight: CGFloat = 100
+        static let title = "Fresh Movies"
+    }
 }

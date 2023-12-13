@@ -1,6 +1,6 @@
 //
-//  CharacterListViewModel.swift
-//  GameOfThronesFactsApp
+//  MovieListViewModel.swift
+//  MyMovieApp
 //
 //  Created by Kamil on 02/10/2020.
 //  Copyright © 2020 Kamil Gacek. All rights reserved.
@@ -8,12 +8,12 @@
 
 import Foundation
 
-protocol CharacterListViewModelDelegate: AnyObject {
-    func viewModelReloadData(_ viewModel: CharacterListViewModelType)
+protocol MovieListViewModelDelegate: AnyObject {
+    func viewModelReloadData(_ viewModel: MovieListViewModelType)
 }
 
-protocol CharacterListViewModelType {
-    var delegate: CharacterListViewModelDelegate? { get set }
+protocol MovieListViewModelType {
+    var delegate: MovieListViewModelDelegate? { get set }
     var movies: [Movie] { get }
     var moviesAll: [Movie] { get }
     
@@ -23,11 +23,11 @@ protocol CharacterListViewModelType {
     func reloadData()
 }
 
-class CharacterListViewModel: CharacterListViewModelType {
+class MovieListViewModel: MovieListViewModelType {
     
     var movies: [Movie] = []
     var moviesAll: [Movie] = []
-    weak var delegate: CharacterListViewModelDelegate?
+    weak var delegate: MovieListViewModelDelegate?
     
     func updateMovieList(movies: [Movie]) {
         self.movies = movies
@@ -38,7 +38,7 @@ class CharacterListViewModel: CharacterListViewModelType {
     }
     
     func fetchCharaters() {
-        DataFetcher.shared.fetchCharacters { [weak self] movies, error in
+        DataFetcher.shared.fetchMovies { [weak self] movies, error in
             guard let self = self, let movies = movies else { return }
             
             self.movies = movies
