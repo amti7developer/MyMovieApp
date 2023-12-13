@@ -12,7 +12,7 @@ import TinyConstraints
 
 class MovieCell: UITableViewCell {
     
-    private let MovieImageView = CachedImageView()
+    private let movieImageView = CachedImageView()
     private let starImageView = UIButton()
     private let nameLabel = UILabel()
     private let descriptionLabel = UILabel()
@@ -30,31 +30,28 @@ class MovieCell: UITableViewCell {
     }
     
     func configure(with movie: Movie) {
-        MovieImageView.loadImage(string: movie.backdrop_path ?? "")
+        movieImageView.loadImage(string: movie.backdrop_path ?? "")
         nameLabel.text = movie.title
-//        if let popularity = movie.popularity {
-//            descriptionLabel.text = "\(popu)"
-//        }
         
         let movieID = movie.id ?? 0
         let isFav = UserDefaults.standard.bool(forKey: "\(movieID)")
         let imgName = isFav ? "star.fill" : "star"
         starImageView.setImage(UIImage(named: imgName), for: .normal)
-        
+        movieImageView.backgroundColor = .black
     }
     
     private func addSubviews() {
-        [MovieImageView, nameLabel, descriptionLabel, starImageView].forEach {
+        [movieImageView, nameLabel, descriptionLabel, starImageView].forEach {
             addSubview($0)
         }
     }
     
     private func setupConstraints() {
-        MovieImageView.leadingToSuperview(offset: Constants.standardOffset)
-        MovieImageView.centerYToSuperview()
+        movieImageView.leadingToSuperview(offset: Constants.standardOffset)
+        movieImageView.centerYToSuperview()
         
-        nameLabel.top(to: MovieImageView, offset: Constants.smallerOffset)
-        nameLabel.leadingToTrailing(of: MovieImageView, offset: Constants.standardOffset)
+        nameLabel.top(to: movieImageView, offset: Constants.smallerOffset)
+        nameLabel.leadingToTrailing(of: movieImageView, offset: Constants.standardOffset)
         
         starImageView.leadingToTrailing(of: nameLabel, offset: Constants.smallerOffset)
         starImageView.trailingToSuperview(offset: 8)
@@ -64,8 +61,8 @@ class MovieCell: UITableViewCell {
     }
     
     private func setupSubviews() {
-        MovieImageView.size(CGSize(width: Constants.buttonSize, height: Constants.buttonSize))
-        MovieImageView.layer.cornerRadius = Constants.cornerRadius
+        movieImageView.size(CGSize(width: Constants.buttonSize, height: Constants.buttonSize))
+        movieImageView.layer.cornerRadius = Constants.cornerRadius
         
         nameLabel.font = .boldSystemFont(ofSize: Constants.standardOffset)
         nameLabel.numberOfLines = 2
@@ -80,7 +77,7 @@ class MovieCell: UITableViewCell {
     }
     
     @objc private func starImageTapped() {
-        print("(*) TAPPEd")
+        
     }
 }
 

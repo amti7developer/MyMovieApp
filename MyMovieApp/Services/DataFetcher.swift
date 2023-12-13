@@ -15,8 +15,8 @@ class DataFetcher {
 
     private let mainUrl = Environment.serverURL.absoluteString
 
-    func fetchMovies(completion: @escaping ([Movie]?, Error?) -> Void) {
-        let stringURL = "\(mainUrl)/3/movie/now_playing?language=en-US&page=1"
+    func fetchMovies(page: Int, completion: @escaping ([Movie]?, Error?) -> Void) {
+        let stringURL = "\(mainUrl)/3/movie/now_playing?language=en-US&page=\(page)"
         guard let url = URL(string: stringURL) else { return }
         var request = URLRequest(url: url)
         let headers = [

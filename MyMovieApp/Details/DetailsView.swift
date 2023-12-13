@@ -42,17 +42,18 @@ final class DetailsView: BaseView {
     override func setupConstraints() {
         avatarImageView.leadingToSuperview()
         avatarImageView.trailingToSuperview()
-        avatarImageView.topToSuperview()
+        avatarImageView.topToSuperview(offset: 50)
         avatarImageView.height(Constants.imageViewWidth)
+        avatarImageView.backgroundColor = .black
         
         likeButton.leadingToSuperview(offset: 16)
-        likeButton.topToBottom(of: avatarImageView, offset: 0)
+        likeButton.topToBottom(of: avatarImageView, offset: 8)
         likeButton.width(40)
         likeButton.height(40)
         
         titleLabel.leadingToSuperview(offset: Constants.standardOffset)
         titleLabel.trailingToSuperview(offset: Constants.standardOffset)
-        titleLabel.topToBottom(of: likeButton, offset: Constants.biggerOffset)
+        titleLabel.topToBottom(of: likeButton, offset: 8)
         
         releaseLabel.leadingToSuperview(offset: Constants.standardOffset)
         releaseLabel.trailingToSuperview(offset: Constants.standardOffset)
@@ -62,7 +63,7 @@ final class DetailsView: BaseView {
         ratingLabel.trailingToSuperview(offset: Constants.standardOffset)
         ratingLabel.topToBottom(of: releaseLabel, offset: Constants.smallOffset)
         
-        detailsTextView.topToBottom(of: ratingLabel, offset: Constants.biggerOffset)
+        detailsTextView.topToBottom(of: ratingLabel, offset: Constants.normalFontSize)
         detailsTextView.leadingToSuperview(offset: 13)
         detailsTextView.trailingToSuperview(offset: Constants.standardOffset)
         detailsTextView.textAlignment = .left
@@ -134,7 +135,7 @@ extension DetailsView {
         static let biggerOffset: CGFloat = 32
         static let buttonHeight: CGFloat = 50
         static let standardImageSize: CGFloat = 56
-        static let imageViewWidth: CGFloat = 330
+        static let imageViewWidth: CGFloat = 220
         static let normalFontSize: CGFloat = 18
         static let bigFontSize: CGFloat = 28
         static let standardCornerRadius: CGFloat = 20

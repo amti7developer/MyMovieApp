@@ -27,14 +27,12 @@ final class MoviesListViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel.fetchCharaters()
+        viewModel.fetchMovies(page: pageCount)
         
         view.backgroundColor = .white
         navigationItem.title = Constants.title
         navigationItem.searchController = searchController
         searchController.searchResultsUpdater = self
-        
-        
     }
     
     override func addSubviews() {
@@ -50,6 +48,25 @@ final class MoviesListViewController: BaseViewController {
         tableView.dataSource = self
         tableView.register(MovieCell.self, forCellReuseIdentifier: Constants.cell)
 
+    }
+    
+    var isPaginating: Bool = false
+    var pageCount: Int = 1
+}
+
+extension MoviesListViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
+        let scrollHeight = scrollView.frame.size.height
+        let scrollOffsetY = scrollView.contentOffset.y
+        let tableHeight = tableView.contentSize.height
+        let offsetCondition = scrollHeight > tableHeight - scrollOffsetY + 150
+        
+        if offsetCondition && !isPaginating && tableHeight > 0 {
+            isPaginating = true
+            pageCount += 1
+            viewModel.fetchMovies(page: pageCount)
+        }
     }
 }
 
@@ -81,8 +98,9 @@ extension MoviesListViewController: UITableViewDelegate {
 
 extension MoviesListViewController: MovieListViewModelDelegate {
     func viewModelReloadData(_ viewModel: MovieListViewModelType) {
+        self.isPaginating = false
         DispatchQueue.main.async { [weak self] in
-            self?.tableView.reloadData()
+            self?.tableView.reloadData()   
         }
     }
 }
