@@ -11,6 +11,8 @@ import TinyConstraints
 
 final class MoviesListViewController: BaseViewController {
     
+    private var isPaginating: Bool = false
+    private var pageCount: Int = 1
     private let searchController = UISearchController()
     
     var handleMovieSelected: ((Movie) -> Void)?
@@ -28,7 +30,7 @@ final class MoviesListViewController: BaseViewController {
         super.viewDidLoad()
         
         viewModel.fetchMovies(page: pageCount)
-        
+                
         view.backgroundColor = .white
         navigationItem.title = Constants.title
         navigationItem.searchController = searchController
@@ -49,9 +51,7 @@ final class MoviesListViewController: BaseViewController {
         tableView.register(MovieCell.self, forCellReuseIdentifier: Constants.cell)
 
     }
-    
-    var isPaginating: Bool = false
-    var pageCount: Int = 1
+   
 }
 
 extension MoviesListViewController: UIScrollViewDelegate {
@@ -62,7 +62,9 @@ extension MoviesListViewController: UIScrollViewDelegate {
         let tableHeight = tableView.contentSize.height
         let offsetCondition = scrollHeight > tableHeight - scrollOffsetY + 150
         
-        if offsetCondition && !isPaginating && tableHeight > 0 {
+        let searchBarCondition = (searchController.searchBar.text ?? "").isEmpty
+        
+        if offsetCondition && !isPaginating && tableHeight > 0 && searchBarCondition {
             isPaginating = true
             pageCount += 1
             viewModel.fetchMovies(page: pageCount)
@@ -118,7 +120,7 @@ extension MoviesListViewController: MovieListViewModelDelegate {
 
 extension MoviesListViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else {
+        guard searchController.searchBar.text != nil else {
             return
         }
         
@@ -128,12 +130,8 @@ extension MoviesListViewController: UISearchResultsUpdating {
             return
         }
         
-        let updatedMovies = viewModel.moviesAll.filter { movie in
-            movie.title?.contains(text) ?? false
-        }
-        
-        viewModel.updateMovieList(movies: updatedMovies)
-        tableView.reloadData()
+        let movieSearch = searchController.searchBar.text ?? ""
+        viewModel.searchMovies(movie: movieSearch)
     }
     
 }

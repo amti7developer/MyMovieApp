@@ -17,7 +17,8 @@ protocol MovieListViewModelType {
     var movies: [Movie] { get }
     var moviesAll: [Movie] { get }
     
-    func fetchMovies(page: Int) // , completion: () -> ())
+    func fetchMovies(page: Int)
+    func searchMovies(movie: String)
     func updateMovieList(movies: [Movie])
     func resetMovieList()
     func reloadData()
@@ -57,6 +58,15 @@ class MovieListViewModel: MovieListViewModelType {
         }
     }
     
+    func searchMovies(movie: String) {
+        DataFetcher.shared.searchMovie(title: movie) { [weak self] movies, error in
+            guard let self = self, let movies = movies else { return }
+            
+            self.movies = movies
+            self.delegate?.viewModelReloadData(self)
+        }
+    }
+
     func reloadData() {
         delegate?.viewModelReloadData(self)
     }

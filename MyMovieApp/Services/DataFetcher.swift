@@ -6,9 +6,9 @@
 //  Copyright © 2020 Kamil Gacek. All rights reserved.
 //
 
-import Foundation
+import Found    ation
 
-class DataFetcher {
+final class DataFetcher {
     
     static let shared = DataFetcher()
     private init() {}
@@ -21,13 +21,31 @@ class DataFetcher {
         var request = URLRequest(url: url)
         let headers = [
           "accept": "application/json",
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzN2Q1OGIzZjc5NmI3Njg0MTVkMWViZDFjNTA5NzljZSIsInN1YiI6IjY1NzQ0YzExYmJlMWRkMDExYjhmNzNmOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.uYbehKEuI4Bb_2GCayisTwSc50x-iFczydYpDoizdSA  "
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzN2Q1OGIzZjc5NmI3Njg0MTVkMWViZDFjNTA5NzljZSIsInN1YiI6IjY1NzQ0YzExYmJlMWRkMDExYjhmNzNmOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.uYbehKEuI4Bb_2GCayisTwSc50x-iFczydYpDoizdSA"
         ]
         
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = headers
                 
         getFetcher(request: request) { completion($0, $1) }
+    }
+    
+    func searchMovie(title: String, completion: @escaping ([Movie]?, Error?) -> Void) {
+        let stringURL =
+        //"https://api.themoviedb.org/3/search/movie?query=fast?include_adult=false&language=en-US&page=1"
+        "https://api.themoviedb.org/3/search/movie?query=\(title)"
+        guard let url = URL(string: stringURL) else { return }
+        var request = URLRequest(url: url)
+        let headers = [
+          "accept": "application/json",
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzN2Q1OGIzZjc5NmI3Njg0MTVkMWViZDFjNTA5NzljZSIsInN1YiI6IjY1NzQ0YzExYmJlMWRkMDExYjhmNzNmOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.uYbehKEuI4Bb_2GCayisTwSc50x-iFczydYpDoizdSA"
+        ]
+        
+        request.httpMethod = "GET"
+        request.allHTTPHeaderFields = headers
+                
+        getFetcher(request: request) { completion($0, $1) }
+        
     }
 
     private func getFetcher(request: URLRequest, completion: @escaping ([Movie]?, Error?) -> Void) {
