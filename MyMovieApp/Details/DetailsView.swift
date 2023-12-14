@@ -42,18 +42,17 @@ final class DetailsView: BaseView {
     override func setupConstraints() {
         avatarImageView.leadingToSuperview()
         avatarImageView.trailingToSuperview()
-        avatarImageView.topToSuperview(offset: 50)
+        avatarImageView.topToSuperview(offset: Constants.avatarTopOffset)
         avatarImageView.height(Constants.imageViewWidth)
-        avatarImageView.backgroundColor = .black
         
-        likeButton.leadingToSuperview(offset: 16)
-        likeButton.topToBottom(of: avatarImageView, offset: 8)
-        likeButton.width(40)
-        likeButton.height(40)
+        likeButton.leadingToSuperview(offset: Constants.standardOffset)
+        likeButton.topToBottom(of: avatarImageView, offset: Constants.smallOffset)
+        likeButton.width(Constants.likeButtonSize)
+        likeButton.height(Constants.likeButtonSize)
         
         titleLabel.leadingToSuperview(offset: Constants.standardOffset)
         titleLabel.trailingToSuperview(offset: Constants.standardOffset)
-        titleLabel.topToBottom(of: likeButton, offset: 8)
+        titleLabel.topToBottom(of: likeButton, offset: Constants.smallOffset)
         
         releaseLabel.leadingToSuperview(offset: Constants.standardOffset)
         releaseLabel.trailingToSuperview(offset: Constants.standardOffset)
@@ -64,9 +63,8 @@ final class DetailsView: BaseView {
         ratingLabel.topToBottom(of: releaseLabel, offset: Constants.smallOffset)
         
         detailsTextView.topToBottom(of: ratingLabel, offset: Constants.normalFontSize)
-        detailsTextView.leadingToSuperview(offset: 13)
+        detailsTextView.leadingToSuperview(offset: Constants.detailsOffset)
         detailsTextView.trailingToSuperview(offset: Constants.standardOffset)
-        detailsTextView.textAlignment = .left
         
         moreButton.topToBottom(of: detailsTextView, offset: Constants.standardOffset)
         moreButton.leadingToSuperview(offset: Constants.biggerOffset)
@@ -79,20 +77,20 @@ final class DetailsView: BaseView {
         titleLabel.font = .boldSystemFont(ofSize: Constants.bigFontSize)
         titleLabel.numberOfLines = Constants.doubleLine
         
-        likeButton.setImage(UIImage(named: "star"), for: .normal)
-        likeButton.setImage(UIImage(named: "star.fill"), for: .selected)
+        likeButton.setImage(UIImage(named: Constants.star), for: .normal)
+        likeButton.setImage(UIImage(named: Constants.starFill), for: .selected)
         likeButton.addTarget(self, action: #selector(likeTapped), for: .touchUpInside)
-        
         likeButton.tintColor = .black
-        
+        likeButton.isSelected = viewModel.isMovieFavorite()
+
         releaseLabel.font = .systemFont(ofSize: Constants.normalFontSize)
         ratingLabel.font = .systemFont(ofSize: Constants.normalFontSize)
-        
-        likeButton.isSelected = viewModel.isMovieFavorite()
+        avatarImageView.backgroundColor = .black
 
         detailsTextView.font = .systemFont(ofSize: Constants.normalFontSize)
         detailsTextView.isEditable = false
-        
+        detailsTextView.textAlignment = .left
+
         moreButton.backgroundColor = .systemYellow
         moreButton.setTitle(Constants.closeString, for: .normal)
         moreButton.setTitleColor(.black, for: .normal)
@@ -103,18 +101,17 @@ final class DetailsView: BaseView {
     }
     
     func configureView(movie: Movie) {
-        
-        avatarImageView.loadImage(string: movie.backdrop_path ?? "")
+        avatarImageView.loadImage(urlString: movie.backdrop_path ?? "")
         avatarImageView.contentMode = .scaleAspectFit
         titleLabel.text = movie.title
         detailsTextView.text = movie.overview
         
-        let releaseDate = movie.release_date ?? "Unnowned"
-        let rating = Double(round(10 * (movie.vote_average ?? 0.0)) / 10)
-        
+        let releaseDate = movie.release_date ?? Constants.unnowned
+        let rating = viewModel.roundNumber(value: movie.vote_average ?? 0)
         let ratingString: String = String(rating)
-        releaseLabel.text = "Released: \(releaseDate)"
-        ratingLabel.text = "Rating: \(ratingString)"
+        
+        releaseLabel.text = "\(Constants.released) \(releaseDate)"
+        ratingLabel.text = "\(Constants.rating) \(ratingString)"
     }
     
     @objc private func showMoreAction() {
@@ -130,15 +127,23 @@ final class DetailsView: BaseView {
 extension DetailsView {
     private struct Constants {
         static let doubleLine = 2
-        static let smallOffset: CGFloat = 6
+        static let smallOffset: CGFloat = 8
         static let standardOffset: CGFloat = 16
+        static let detailsOffset: CGFloat = 13
         static let biggerOffset: CGFloat = 32
         static let buttonHeight: CGFloat = 50
+        static let likeButtonSize: CGFloat = 40
+        static let avatarTopOffset: CGFloat = 50
         static let standardImageSize: CGFloat = 56
         static let imageViewWidth: CGFloat = 220
         static let normalFontSize: CGFloat = 18
         static let bigFontSize: CGFloat = 28
         static let standardCornerRadius: CGFloat = 20
         static let closeString = "Close"
+        static let unnowned = "Unnowned"
+        static let released = "Released:"
+        static let rating = "Rating:"
+        static let star = "star"
+        static let starFill = "star.fill"
     }
 }

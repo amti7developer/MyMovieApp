@@ -17,7 +17,7 @@ class MovieCell: UITableViewCell {
     private let nameLabel = UILabel()
     private let descriptionLabel = UILabel()
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         addSubviews()
@@ -30,7 +30,7 @@ class MovieCell: UITableViewCell {
     }
     
     func configure(with movie: Movie, isFavorite: Bool) {
-        movieImageView.loadImage(string: movie.backdrop_path ?? "")
+        movieImageView.loadImage(urlString: movie.backdrop_path ?? "")
         nameLabel.text = movie.title
         
         starImageView.setImage(UIImage(named: "star"), for: .normal)
@@ -54,10 +54,10 @@ class MovieCell: UITableViewCell {
         nameLabel.leadingToTrailing(of: movieImageView, offset: Constants.standardOffset)
         
         starImageView.leadingToTrailing(of: nameLabel, offset: Constants.smallerOffset)
-        starImageView.trailingToSuperview(offset: 8)
+        starImageView.trailingToSuperview(offset: Constants.smallerOffset)
         starImageView.centerYToSuperview()
-        starImageView.width(30)
-        starImageView.height(30)
+        starImageView.width(Constants.imageSize)
+        starImageView.height(Constants.imageSize)
     }
     
     private func setupSubviews() {
@@ -78,6 +78,7 @@ extension MovieCell {
         static let smallerOffset: CGFloat = 8
         static let standardOffset: CGFloat = 16
         static let descriptionFont: CGFloat = 15
+        static let imageSize: CGFloat = 30
         static let cornerRadius: CGFloat = 10
         static let buttonSize: CGFloat = 64
     }

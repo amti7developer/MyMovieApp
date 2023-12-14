@@ -14,8 +14,6 @@ protocol MovieListViewModelDelegate: AnyObject {
 
 protocol MovieListViewModelType {
     var delegate: MovieListViewModelDelegate? { get set }
-    var movies: [Movie] { get }
-    var moviesAll: [Movie] { get }
     
     func fetchMovies(page: Int)
     func searchMovies(movie: String)
@@ -24,14 +22,24 @@ protocol MovieListViewModelType {
     func reloadData()
     func toggleLiked(index: Int)
     func isMovieFavorite(index: Int) -> Bool
+    func getMovies() -> [Movie]
+    func numberOfMovies() -> Int
+    func movieForIndex(index: Int) -> Movie
 }
 
 class MovieListViewModel: MovieListViewModelType {
-    private let defaults = UserDefaults.standard
     
-    var movies: [Movie] = []
-    var moviesAll: [Movie] = []
     weak var delegate: MovieListViewModelDelegate?
+
+    private let defaults = UserDefaults.standard
+    private let dataFetcherService: DataFetcherServiceType
+    
+    private var movies: [Movie] = []
+    private var moviesAll: [Movie] = []
+    
+    init(dataFetcherService: DataFetcherServiceType) {
+        self.dataFetcherService = dataFetcherService
+    }
     
     func updateMovieList(movies: [Movie]) {
         self.movies = movies
@@ -39,6 +47,18 @@ class MovieListViewModel: MovieListViewModelType {
     
     func resetMovieList() {
         self.movies = moviesAll
+    }
+
+    func getMovies() -> [Movie] {
+        movies
+    }
+    
+    func numberOfMovies() -> Int {
+        movies.count
+    }
+    
+    func movieForIndex(index: Int) -> Movie {
+        return movies[index]
     }
 
     func toggleLiked(index: Int) {
@@ -49,7 +69,7 @@ class MovieListViewModel: MovieListViewModelType {
     }
     
     func fetchMovies(page: Int) {
-        DataFetcher.shared.fetchMovies(page: page) { [weak self] movies, error in
+        dataFetcherService.fetchMovies(page: page) { [weak self] movies, error in
             guard let self = self, let movies = movies else { return }
                 
             self.movies.append(contentsOf: movies)
@@ -59,7 +79,7 @@ class MovieListViewModel: MovieListViewModelType {
     }
     
     func searchMovies(movie: String) {
-        DataFetcher.shared.searchMovie(title: movie) { [weak self] movies, error in
+        dataFetcherService.searchMovie(title: movie) { [weak self] movies, error in
             guard let self = self, let movies = movies else { return }
             
             self.movies = movies

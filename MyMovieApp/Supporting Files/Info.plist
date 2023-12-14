@@ -41,5 +41,9 @@
 	<string>$(server_host)</string>
 	<key>server_scheme</key>
 	<string>$(server_scheme)</string>
+	<key>server_application</key>
+	<string>$(server_application)</string>
+	<key>server_token</key>
+	<string>$(server_token)</string>
 </dict>
 </plist>

@@ -12,8 +12,10 @@ class MainCoordinator: Coordinator {
 
     var childCoordinators = [Coordinator]()
     var navigationController: UINavigationController
-    let viewModel = MovieListViewModel()
-    private lazy var moviesListViewController = MoviesListViewController(viewModel: viewModel)
+    
+    private let dataFetcherService = DataFetcherService()
+    private lazy var moviesListViewModel = MovieListViewModel(dataFetcherService: dataFetcherService)
+    private lazy var moviesListViewController = MoviesListViewController(viewModel: moviesListViewModel)
     
 
     init(navigationController: UINavigationController) {
@@ -40,7 +42,6 @@ class MainCoordinator: Coordinator {
 
 extension MainCoordinator: DetailsViewControllerDelegate {
     func detailsViewControllerCloseTapped(_ view: DetailsViewController) {
-        viewModel.reloadData()
-        
+        moviesListViewModel.reloadData()
     }
 }

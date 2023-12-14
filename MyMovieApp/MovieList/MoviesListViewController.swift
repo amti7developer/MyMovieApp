@@ -49,9 +49,7 @@ final class MoviesListViewController: BaseViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(MovieCell.self, forCellReuseIdentifier: Constants.cell)
-
     }
-   
 }
 
 extension MoviesListViewController: UIScrollViewDelegate {
@@ -60,7 +58,7 @@ extension MoviesListViewController: UIScrollViewDelegate {
         let scrollHeight = scrollView.frame.size.height
         let scrollOffsetY = scrollView.contentOffset.y
         let tableHeight = tableView.contentSize.height
-        let offsetCondition = scrollHeight > tableHeight - scrollOffsetY + 150
+        let offsetCondition = scrollHeight > tableHeight - scrollOffsetY + Constants.bonusOffset
         
         let searchBarCondition = (searchController.searchBar.text ?? "").isEmpty
         
@@ -74,21 +72,19 @@ extension MoviesListViewController: UIScrollViewDelegate {
 
 extension MoviesListViewController: UITableViewDataSource  {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.movies.count
+        return viewModel.numberOfMovies()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cell, for: indexPath) as? MovieCell, viewModel.movies.indices.contains(indexPath.row) else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cell, for: indexPath) as? MovieCell, viewModel.getMovies().indices.contains(indexPath.row) else { return UITableViewCell() }
 
-        let movie = viewModel.movies[indexPath.row]
+        let movie = viewModel.movieForIndex(index: indexPath.row)
         let isFavorite = viewModel.isMovieFavorite(index: indexPath.row)
-        cell.configure(with: movie, isFavorite: isFavorite)
-        
-        let tapGesture = CustomTapGestureRecognizer(target: self,
-                                                    action: #selector(tapSelector(sender:)))
+        let tapGesture = CustomTapGestureRecognizer(target: self, action: #selector(tapSelector(sender:)))
         tapGesture.index = indexPath.row
         cell.starImageView.addGestureRecognizer(tapGesture)
-        cell.bringSubview(toFront: cell.starImageView)
+        cell.configure(with: movie, isFavorite: isFavorite)
+        cell.bringSubviewToFront(cell.starImageView)
         
         return cell
     }
@@ -105,7 +101,7 @@ extension MoviesListViewController: UITableViewDataSource  {
 
 extension MoviesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        handleMovieSelected?(viewModel.movies[indexPath.row])
+        handleMovieSelected?(viewModel.movieForIndex(index: indexPath.row))
     }
 }
 
@@ -133,17 +129,13 @@ extension MoviesListViewController: UISearchResultsUpdating {
         let movieSearch = searchController.searchBar.text ?? ""
         viewModel.searchMovies(movie: movieSearch)
     }
-    
 }
 
 extension MoviesListViewController {
     private struct Constants {
         static let cell = "cell"
         static let cellHeight: CGFloat = 100
+        static let bonusOffset: CGFloat = 150
         static let title = "Fresh Movies"
     }
-}
-
-class CustomTapGestureRecognizer: UITapGestureRecognizer {
-    var index: Int?
 }

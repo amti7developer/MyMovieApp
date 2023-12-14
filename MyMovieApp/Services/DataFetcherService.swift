@@ -6,46 +6,45 @@
 //  Copyright © 2020 Kamil Gacek. All rights reserved.
 //
 
-import Found    ation
+import Foundation
 
-final class DataFetcher {
-    
-    static let shared = DataFetcher()
-    private init() {}
+protocol DataFetcherServiceType {
+    func searchMovie(title: String, completion: @escaping ([Movie]?, Error?) -> Void)
+    func fetchMovies(page: Int, completion: @escaping ([Movie]?, Error?) -> Void)
+}
+
+final class DataFetcherService: DataFetcherServiceType {
 
     private let mainUrl = Environment.serverURL.absoluteString
-
+    
     func fetchMovies(page: Int, completion: @escaping ([Movie]?, Error?) -> Void) {
-        let stringURL = "\(mainUrl)/3/movie/now_playing?language=en-US&page=\(page)"
-        guard let url = URL(string: stringURL) else { return }
-        var request = URLRequest(url: url)
-        let headers = [
-          "accept": "application/json",
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzN2Q1OGIzZjc5NmI3Njg0MTVkMWViZDFjNTA5NzljZSIsInN1YiI6IjY1NzQ0YzExYmJlMWRkMDExYjhmNzNmOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.uYbehKEuI4Bb_2GCayisTwSc50x-iFczydYpDoizdSA"
-        ]
+        let nowPlaying = Endpoint.nowPlaying.rawValue
+        let stringURL = "\(mainUrl)\(nowPlaying)?language=en-US&page=\(page)"
         
-        request.httpMethod = "GET"
-        request.allHTTPHeaderFields = headers
-                
-        getFetcher(request: request) { completion($0, $1) }
+        print("(*) url", Environment.serverURL)
+        makeRequest(stringURL: stringURL) { completion($0, $1) }
     }
     
     func searchMovie(title: String, completion: @escaping ([Movie]?, Error?) -> Void) {
-        let stringURL =
-        //"https://api.themoviedb.org/3/search/movie?query=fast?include_adult=false&language=en-US&page=1"
-        "https://api.themoviedb.org/3/search/movie?query=\(title)"
+        let search = Endpoint.search.rawValue
+        let stringURL = "\(mainUrl)\(search)?query=\(title)"
+        makeRequest(stringURL: stringURL) { completion($0, $1) }
+    }
+    
+    private func makeRequest(stringURL: String, completion: @escaping ([Movie]?, Error?) -> Void) {
         guard let url = URL(string: stringURL) else { return }
         var request = URLRequest(url: url)
         let headers = [
-          "accept": "application/json",
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzN2Q1OGIzZjc5NmI3Njg0MTVkMWViZDFjNTA5NzljZSIsInN1YiI6IjY1NzQ0YzExYmJlMWRkMDExYjhmNzNmOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.uYbehKEuI4Bb_2GCayisTwSc50x-iFczydYpDoizdSA"
+          "accept": Environment.serverApplication,
+          "Authorization": Environment.serverToken
         ]
         
-        request.httpMethod = "GET"
+        print("(*) Env", Environment.serverApplication, Environment.serverToken)
+        
+        request.httpMethod = HTTPType.get.rawValue
         request.allHTTPHeaderFields = headers
                 
         getFetcher(request: request) { completion($0, $1) }
-        
     }
 
     private func getFetcher(request: URLRequest, completion: @escaping ([Movie]?, Error?) -> Void) {

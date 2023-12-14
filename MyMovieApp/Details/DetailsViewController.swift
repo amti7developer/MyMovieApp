@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import LBTAComponents
 
 protocol DetailsViewControllerDelegate: AnyObject {
     func detailsViewControllerCloseTapped(_ view: DetailsViewController)
