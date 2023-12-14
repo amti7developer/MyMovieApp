@@ -84,7 +84,7 @@ extension MoviesListViewController: UITableViewDataSource  {
         tapGesture.index = indexPath.row
         cell.starImageView.addGestureRecognizer(tapGesture)
         cell.configure(with: movie, isFavorite: isFavorite)
-        cell.bringSubviewToFront(cell.starImageView)
+        cell.bringSubview(toFront: cell.starImageView)
         
         return cell
     }

@@ -30,7 +30,7 @@ class MovieCell: UITableViewCell {
     }
     
     func configure(with movie: Movie, isFavorite: Bool) {
-        movieImageView.loadImage(urlString: movie.backdrop_path ?? "")
+        movieImageView.loadImage(string: movie.backdrop_path ?? "")
         nameLabel.text = movie.title
         
         starImageView.setImage(UIImage(named: "star"), for: .normal)

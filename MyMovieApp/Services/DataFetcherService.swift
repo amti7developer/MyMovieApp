@@ -19,15 +19,13 @@ final class DataFetcherService: DataFetcherServiceType {
     
     func fetchMovies(page: Int, completion: @escaping ([Movie]?, Error?) -> Void) {
         let nowPlaying = Endpoint.nowPlaying.rawValue
-        let stringURL = "\(mainUrl)\(nowPlaying)?language=en-US&page=\(page)"
-        
-        print("(*) url", Environment.serverURL)
+        let stringURL = "\(mainUrl)/3\(nowPlaying)?language=en-US&page=\(page)"
         makeRequest(stringURL: stringURL) { completion($0, $1) }
     }
     
     func searchMovie(title: String, completion: @escaping ([Movie]?, Error?) -> Void) {
         let search = Endpoint.search.rawValue
-        let stringURL = "\(mainUrl)\(search)?query=\(title)"
+        let stringURL = "\(mainUrl)/3\(search)?query=\(title)"
         makeRequest(stringURL: stringURL) { completion($0, $1) }
     }
     
@@ -38,8 +36,6 @@ final class DataFetcherService: DataFetcherServiceType {
           "accept": Environment.serverApplication,
           "Authorization": Environment.serverToken
         ]
-        
-        print("(*) Env", Environment.serverApplication, Environment.serverToken)
         
         request.httpMethod = HTTPType.get.rawValue
         request.allHTTPHeaderFields = headers

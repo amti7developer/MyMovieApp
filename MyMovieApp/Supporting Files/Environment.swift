@@ -31,10 +31,7 @@ struct Environment {
     
     static var serverURL: URL {
         let scheme = infoDict[PlistKey.server_scheme.rawValue]! as! String
-        let host = infoDict[PlistKey.server_host.rawValue]! as! String
-        
-        print("(*) SCHEME", scheme, host)
-        
+        let host = infoDict[PlistKey.server_host.rawValue]! as! String        
         let components = NSURLComponents()
         components.scheme = scheme
         components.host = host

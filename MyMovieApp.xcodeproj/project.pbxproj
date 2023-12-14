@@ -452,7 +452,7 @@
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				server_application = application/json;
-				server_host = api.themoviedb.org/3;
+				server_host = api.themoviedb.org;
 				server_key = 37d58b3f796b768415d1ebd1c50979ce;
 				server_scheme = https;
 				server_token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzN2Q1OGIzZjc5NmI3Njg0MTVkMWViZDFjNTA5NzljZSIsInN1YiI6IjY1NzQ0YzExYmJlMWRkMDExYjhmNzNmOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.uYbehKEuI4Bb_2GCayisTwSc50x-iFczydYpDoizdSA";
@@ -474,7 +474,7 @@
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				server_application = application/json;
-				server_host = api.themoviedb.org/3;
+				server_host = api.themoviedb.org;
 				server_key = 37d58b3f796b768415d1ebd1c50979ce;
 				server_scheme = https;
 				server_token = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzN2Q1OGIzZjc5NmI3Njg0MTVkMWViZDFjNTA5NzljZSIsInN1YiI6IjY1NzQ0YzExYmJlMWRkMDExYjhmNzNmOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.uYbehKEuI4Bb_2GCayisTwSc50x-iFczydYpDoizdSA";

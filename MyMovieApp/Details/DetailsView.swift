@@ -101,7 +101,7 @@ final class DetailsView: BaseView {
     }
     
     func configureView(movie: Movie) {
-        avatarImageView.loadImage(urlString: movie.backdrop_path ?? "")
+        avatarImageView.loadImage(string: movie.backdrop_path ?? "")
         avatarImageView.contentMode = .scaleAspectFit
         titleLabel.text = movie.title
         detailsTextView.text = movie.overview
