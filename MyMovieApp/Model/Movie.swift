@@ -10,7 +10,7 @@ import Foundation
 
 struct MovieResponse: Codable {
     
-    let dates: DateRange
+    let dates: DateRange?
     let page: Int?
     let results: [Movie]?
     let totalPages: Int?

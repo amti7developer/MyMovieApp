@@ -12,8 +12,8 @@ import TinyConstraints
 
 class MovieCell: UITableViewCell {
     
+    let starImageView = UIButton()
     private let movieImageView = CachedImageView()
-    private let starImageView = UIButton()
     private let nameLabel = UILabel()
     private let descriptionLabel = UILabel()
     
@@ -29,14 +29,14 @@ class MovieCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with movie: Movie) {
+    func configure(with movie: Movie, isFavorite: Bool) {
         movieImageView.loadImage(string: movie.backdrop_path ?? "")
         nameLabel.text = movie.title
         
-        let movieID = movie.id ?? 0
-        let isFav = UserDefaults.standard.bool(forKey: "\(movieID)")
-        let imgName = isFav ? "star.fill" : "star"
-        starImageView.setImage(UIImage(named: imgName), for: .normal)
+        starImageView.setImage(UIImage(named: "star"), for: .normal)
+        starImageView.setImage(UIImage(named: "star.fill"), for: .selected)
+        starImageView.isSelected = isFavorite
+
         movieImageView.backgroundColor = .black
     }
     
@@ -67,17 +67,9 @@ class MovieCell: UITableViewCell {
         nameLabel.font = .boldSystemFont(ofSize: Constants.standardOffset)
         nameLabel.numberOfLines = 2
         
-        
-        
         starImageView.tintColor = .black
-        starImageView.addTarget(self, action: #selector(starImageTapped), for: .touchUpInside)
-        
         descriptionLabel.font = .systemFont(ofSize: Constants.descriptionFont)
         descriptionLabel.textColor = .darkGray
-    }
-    
-    @objc private func starImageTapped() {
-        
     }
 }
 
@@ -89,5 +81,4 @@ extension MovieCell {
         static let cornerRadius: CGFloat = 10
         static let buttonSize: CGFloat = 64
     }
-    
 }

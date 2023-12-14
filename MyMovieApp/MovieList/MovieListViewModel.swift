@@ -21,9 +21,12 @@ protocol MovieListViewModelType {
     func updateMovieList(movies: [Movie])
     func resetMovieList()
     func reloadData()
+    func toggleLiked(index: Int)
+    func isMovieFavorite(index: Int) -> Bool
 }
 
 class MovieListViewModel: MovieListViewModelType {
+    private let defaults = UserDefaults.standard
     
     var movies: [Movie] = []
     var moviesAll: [Movie] = []
@@ -36,8 +39,15 @@ class MovieListViewModel: MovieListViewModelType {
     func resetMovieList() {
         self.movies = moviesAll
     }
+
+    func toggleLiked(index: Int) {
+        let movieID = movies[index].id ?? 0
+        defaults.set(!isMovieFavorite(index: index), forKey: "\(movieID)")
+        
+        delegate?.viewModelReloadData(self)
+    }
     
-    func fetchMovies(page: Int) { // }, completion: () -> ()) {
+    func fetchMovies(page: Int) {
         DataFetcher.shared.fetchMovies(page: page) { [weak self] movies, error in
             guard let self = self, let movies = movies else { return }
                 
@@ -49,5 +59,11 @@ class MovieListViewModel: MovieListViewModelType {
     
     func reloadData() {
         delegate?.viewModelReloadData(self)
+    }
+    
+    func isMovieFavorite(index: Int) -> Bool {
+        let movieID = movies[index].id ?? 0
+        let isFav = defaults.bool(forKey: "\(movieID)")
+        return isFav
     }
 }

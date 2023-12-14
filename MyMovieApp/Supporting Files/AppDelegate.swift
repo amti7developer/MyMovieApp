@@ -17,7 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         let navigationController = UINavigationController()
-        navigationController.navigationBar.barTintColor = UIColor.systemYellow
         
         coordinator = MainCoordinator(navigationController: navigationController)
         coordinator?.start()

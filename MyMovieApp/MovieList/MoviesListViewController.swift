@@ -78,10 +78,21 @@ extension MoviesListViewController: UITableViewDataSource  {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cell, for: indexPath) as? MovieCell, viewModel.movies.indices.contains(indexPath.row) else { return UITableViewCell() }
 
-        let Movie = viewModel.movies[indexPath.row]
-        cell.configure(with: Movie)
+        let movie = viewModel.movies[indexPath.row]
+        let isFavorite = viewModel.isMovieFavorite(index: indexPath.row)
+        cell.configure(with: movie, isFavorite: isFavorite)
+        
+        let tapGesture = CustomTapGestureRecognizer(target: self,
+                                                    action: #selector(tapSelector(sender:)))
+        tapGesture.index = indexPath.row
+        cell.starImageView.addGestureRecognizer(tapGesture)
+        cell.bringSubview(toFront: cell.starImageView)
         
         return cell
+    }
+    
+    @objc func tapSelector(sender: CustomTapGestureRecognizer) {
+        viewModel.toggleLiked(index: sender.index ?? 0)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -100,7 +111,7 @@ extension MoviesListViewController: MovieListViewModelDelegate {
     func viewModelReloadData(_ viewModel: MovieListViewModelType) {
         self.isPaginating = false
         DispatchQueue.main.async { [weak self] in
-            self?.tableView.reloadData()   
+            self?.tableView.reloadData()
         }
     }
 }
@@ -133,4 +144,8 @@ extension MoviesListViewController {
         static let cellHeight: CGFloat = 100
         static let title = "Fresh Movies"
     }
+}
+
+class CustomTapGestureRecognizer: UITapGestureRecognizer {
+    var index: Int?
 }
