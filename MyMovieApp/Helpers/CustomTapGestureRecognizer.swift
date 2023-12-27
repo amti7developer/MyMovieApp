@@ -10,4 +10,5 @@ import UIKit
 
 class CustomTapGestureRecognizer: UITapGestureRecognizer {
     var index: Int?
+    var isLiked: Bool? 
 }

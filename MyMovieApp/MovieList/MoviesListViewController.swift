@@ -82,6 +82,7 @@ extension MoviesListViewController: UITableViewDataSource  {
         let isFavorite = viewModel.isMovieFavorite(index: indexPath.row)
         let tapGesture = CustomTapGestureRecognizer(target: self, action: #selector(tapSelector(sender:)))
         tapGesture.index = indexPath.row
+        tapGesture.isLiked = isFavorite
         cell.starImageView.addGestureRecognizer(tapGesture)
         cell.configure(with: movie, isFavorite: isFavorite)
         cell.bringSubview(toFront: cell.starImageView)
@@ -90,13 +91,14 @@ extension MoviesListViewController: UITableViewDataSource  {
     }
     
     @objc func tapSelector(sender: CustomTapGestureRecognizer) {
-        viewModel.toggleLiked(index: sender.index ?? 0)
+        let index = sender.index ?? 0
+        let isLiked = sender.isLiked ?? false
+        viewModel.toggleLiked(liked: !isLiked, index: index)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Constants.cellHeight
     }
-
 }
 
 extension MoviesListViewController: UITableViewDelegate {

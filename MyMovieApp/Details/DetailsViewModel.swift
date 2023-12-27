@@ -12,7 +12,7 @@ protocol DetailsViewModelType {
     var movie: Movie { get }
     
     func isMovieFavorite() -> Bool
-    func toggleLiked()
+    func toggleLiked(liked: Bool)
     func roundNumber(value: Double) -> Double
 }
 
@@ -35,8 +35,8 @@ class DetailsViewModel: DetailsViewModelType {
         Double(round(10 * value) / 10)
     }
     
-    func toggleLiked() {
+    func toggleLiked(liked: Bool) {
         let movieID = movie.id ?? 0
-        defaults.set(!isMovieFavorite(), forKey: "\(movieID)")
+        defaults.set(liked, forKey: "\(movieID)")
     }
 }

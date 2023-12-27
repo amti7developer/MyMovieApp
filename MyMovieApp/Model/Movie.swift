@@ -17,7 +17,7 @@ struct MovieResponse: Codable {
     let totalResults: Int?
 }
 
-struct Movie: Codable {
+struct Movie: Codable, Equatable {
     let adult: Bool?
     let backdrop_path: String?
     let genre_ids: [Int]?

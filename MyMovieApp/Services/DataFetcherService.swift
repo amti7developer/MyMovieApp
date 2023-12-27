@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol DataFetcherServiceType {
+protocol DataFetcherServiceType: AnyObject {
     func searchMovie(title: String, completion: @escaping ([Movie]?, Error?) -> Void)
     func fetchMovies(page: Int, completion: @escaping ([Movie]?, Error?) -> Void)
 }

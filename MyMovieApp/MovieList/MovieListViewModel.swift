@@ -14,13 +14,14 @@ protocol MovieListViewModelDelegate: AnyObject {
 
 protocol MovieListViewModelType {
     var delegate: MovieListViewModelDelegate? { get set }
-    
+    var dataFetcherService: DataFetcherServiceType { get }
+
     func fetchMovies(page: Int)
     func searchMovies(movie: String)
     func updateMovieList(movies: [Movie])
     func resetMovieList()
     func reloadData()
-    func toggleLiked(index: Int)
+    func toggleLiked(liked: Bool, index: Int)
     func isMovieFavorite(index: Int) -> Bool
     func getMovies() -> [Movie]
     func numberOfMovies() -> Int
@@ -30,9 +31,9 @@ protocol MovieListViewModelType {
 class MovieListViewModel: MovieListViewModelType {
     
     weak var delegate: MovieListViewModelDelegate?
+    let dataFetcherService: DataFetcherServiceType
 
     private let defaults = UserDefaults.standard
-    private let dataFetcherService: DataFetcherServiceType
     
     private var movies: [Movie] = []
     private var moviesAll: [Movie] = []
@@ -60,13 +61,6 @@ class MovieListViewModel: MovieListViewModelType {
     func movieForIndex(index: Int) -> Movie {
         return movies[index]
     }
-
-    func toggleLiked(index: Int) {
-        let movieID = movies[index].id ?? 0
-        defaults.set(!isMovieFavorite(index: index), forKey: "\(movieID)")
-        
-        delegate?.viewModelReloadData(self)
-    }
     
     func fetchMovies(page: Int) {
         dataFetcherService.fetchMovies(page: page) { [weak self] movies, error in
@@ -88,6 +82,12 @@ class MovieListViewModel: MovieListViewModelType {
     }
 
     func reloadData() {
+        delegate?.viewModelReloadData(self)
+    }
+    
+    func toggleLiked(liked: Bool, index: Int) {
+        let movieID = movies[index].id ?? 0
+        defaults.set(liked, forKey: "\(movieID)")
         delegate?.viewModelReloadData(self)
     }
     

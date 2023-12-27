@@ -119,7 +119,7 @@ final class DetailsView: BaseView {
     }
     
     @objc private func likeTapped() {
-        viewModel.toggleLiked()
+        viewModel.toggleLiked(liked: !likeButton.isSelected)
         likeButton.isSelected = viewModel.isMovieFavorite()
     }
 }
